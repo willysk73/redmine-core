@@ -13,9 +13,9 @@ from .config import DEFAULT_CONFIG_FILE, _read_toml
 
 
 _DEFAULTS = {
-    "draft_file":  "{worktree}/.claude/comment-draft-{id}.md",
-    "task_file":   "{worktree}/.claude/task.md",
-    "archive_dir": "{worktree}/.claude/posted",
+    "draft_file":  "{worktree}/.redmine/drafts/comment-draft-{id}.md",
+    "task_file":   "{worktree}/.redmine/task.md",
+    "archive_dir": "{worktree}/.redmine/posted",
 }
 
 
