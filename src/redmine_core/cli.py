@@ -333,6 +333,35 @@ def cmd_post(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def cmd_attachment(args: argparse.Namespace) -> int:
+    if args.action != "download":
+        _emit(f"unknown attachment action: {args.action}", err=True)
+        return EXIT_ARGV
+    client = _client(args)
+    meta = client.get_attachment(args.id)
+    filename = meta.get("filename") or f"attachment-{args.id}"
+    content_url = meta.get("content_url")
+    if not content_url:
+        _emit(f"attachment #{args.id} has no content_url", err=True)
+        return EXIT_GENERIC
+
+    if args.out:
+        out_path = Path(args.out)
+    else:
+        base = Path("/tmp/redmine-attachments")
+        out_path = (base / str(args.issue) / filename) if args.issue else (base / filename)
+
+    if out_path.exists() and not args.force:
+        _emit(str(out_path))
+        return EXIT_OK
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    data = client.download_attachment_bytes(content_url)
+    out_path.write_bytes(data)
+    _emit(str(out_path))
+    return EXIT_OK
+
+
 def cmd_detect(args: argparse.Namespace) -> int:
     cwd = Path(args.cwd) if args.cwd else None
     issue_id = detect_mod.detect(cwd)
@@ -424,6 +453,14 @@ def _build_parser() -> argparse.ArgumentParser:
     sp_suggest.add_argument("kind", choices=["assignee"])
     sp_suggest.add_argument("--id", type=int, required=True)
     sp_suggest.set_defaults(func=cmd_suggest)
+
+    sp_att = sub.add_parser("attachment", help="Attachment operations")
+    sp_att.add_argument("action", choices=["download"])
+    sp_att.add_argument("--id", type=int, required=True, help="Attachment id")
+    sp_att.add_argument("--issue", type=int, help="Issue id (used to group downloads under /tmp/redmine-attachments/<issue>/)")
+    sp_att.add_argument("--out", help="Override output path")
+    sp_att.add_argument("--force", action="store_true", help="Re-download even if file already exists")
+    sp_att.set_defaults(func=cmd_attachment)
 
     return p
 

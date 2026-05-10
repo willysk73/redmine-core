@@ -61,8 +61,10 @@ def issue_display(issue: dict) -> str:
     lines.append(f"▸ 첨부 ({len(attachments)})")
     for a in attachments:
         fn = a.get("filename", "?")
-        url = a.get("content_url", "")
-        lines.append(f"  - {fn}  {url}")
+        aid = a.get("id", "?")
+        size = a.get("filesize")
+        size_str = f" ({size}B)" if size else ""
+        lines.append(f"  - [#{aid}] {fn}{size_str}")
 
     relations = issue.get("relations") or []
     lines.append(f"▸ 관련 ({len(relations)})")

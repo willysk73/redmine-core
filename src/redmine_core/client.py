@@ -128,3 +128,22 @@ class Client:
             body["time_entry"]["comments"] = comments
         data = self._request("POST", "/time_entries.json", body=body)
         return data.get("time_entry", {})
+
+    def get_attachment(self, attachment_id: int) -> dict:
+        data = self._request("GET", f"/attachments/{attachment_id}.json")
+        return data.get("attachment", {})
+
+    def download_attachment_bytes(self, content_url: str) -> bytes:
+        # content_url is absolute (returned by Redmine); we still authenticate
+        # via the API key header.
+        headers = {"X-Redmine-API-Key": self.config.api_key}
+        req = urllib.request.Request(url=content_url, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                raise AuthError(f"HTTP {e.code} on attachment download", status=e.code) from e
+            raise APIError(f"HTTP {e.code} on attachment download", status=e.code) from e
+        except urllib.error.URLError as e:
+            raise APIError(f"network error on attachment download: {e.reason}") from e
