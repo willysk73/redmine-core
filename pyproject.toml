@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "redmine-core"
-version = "0.1.0"
+version = "0.1.1"
 description = "Thin Python CLI for Redmine. Backend for redmine.nvim, also useful standalone."
 readme = "README.md"
 requires-python = ">=3.9"
