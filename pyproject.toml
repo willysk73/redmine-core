@@ -5,9 +5,34 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "redmine-core"
 version = "0.1.0"
-description = "Thin CLI for Redmine, designed as the backend for redmine.nvim"
+description = "Thin Python CLI for Redmine. Backend for redmine.nvim, also useful standalone."
+readme = "README.md"
 requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Will Kang", email = "willysk73@outlook.com" }]
+keywords = ["redmine", "cli", "rest", "neovim", "issue-tracker"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Bug Tracking",
+    "Topic :: Utilities",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/willysk73/redmine-core"
+Repository = "https://github.com/willysk73/redmine-core"
+Issues = "https://github.com/willysk73/redmine-core/issues"
 
 [project.scripts]
 redmine = "redmine_core.cli:main"
