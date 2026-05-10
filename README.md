@@ -12,7 +12,9 @@ standalone — handy for quick CLI workflows against a Redmine instance.
 ## Install
 
 ```bash
-pipx install redmine-core   # recommended (isolated)
+uv tool install redmine-core    # recommended (isolated, fastest)
+# or
+pipx install redmine-core
 # or
 pip install --user redmine-core
 ```
@@ -22,8 +24,20 @@ For local development / editable install:
 ```bash
 git clone https://github.com/willysk73/redmine-core
 cd redmine-core
-pip install -e .
+uv pip install -e .             # or `pip install -e .`
 ```
+
+## Build & publish
+
+```bash
+uv build                                          # → dist/*.whl + dist/*.tar.gz
+uv publish --publish-url https://test.pypi.org/legacy/   # TestPyPI
+uv publish                                        # PyPI (UV_PUBLISH_TOKEN env)
+```
+
+`uv build` replaces `python -m build`; `uv publish` replaces `twine
+upload`. Both honor a standard `~/.pypirc` if you prefer that over env
+vars.
 
 ## Configure
 

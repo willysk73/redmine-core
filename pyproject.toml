@@ -27,7 +27,9 @@ classifiers = [
     "Topic :: Software Development :: Bug Tracking",
     "Topic :: Utilities",
 ]
-dependencies = []
+dependencies = [
+    "twine>=6.2.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/willysk73/redmine-core"
